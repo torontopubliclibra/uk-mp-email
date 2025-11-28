@@ -1,4 +1,4 @@
-# UK MP Email Search Plugin Template Implementation
+# UK MP Email Search Plugin - Template Implementation
 
 ## Overview
 The UK MP Email Search plugin is a WordPress plugin that integrates with the [UK Parliament Members API](https://members-api.parliament.uk/index.html). It allows users to find their MP by entering a postcode, and provides a templated email system for contacting their MP directly.
@@ -30,4 +30,5 @@ Sincerely,
 ```
 
 ### Updating the template
+
 To update the email template, visit the admin interface at `/admin/class-ukmp-email-admin.php`, also located at Settings > UK MP Email Settings.
