@@ -3,7 +3,7 @@
  * Plugin Name: UK MP Email Search
  * Plugin URI: https://github.com/torontopubliclibra/uk-mp-email
  * Description: A WordPress plugin that finds the email addresses of UK Members of Parliament based on postcode input, and then drafts a templated email to send to them. It was designed and built by Dana Teagle for Not A Phase in 2025.
- * Version: 1.0.0
+ * Version: 1.1.0
  * Author: Dana Rosamund Teagle
  * Author URI: https://danateagle.com
  * Text Domain: uk-mp-email
@@ -18,6 +18,14 @@
 // Prevent direct access
 if (!defined('ABSPATH')) {
     exit;
+}
+
+// Function stubs for static analysis tools or environments lacking WordPress core
+if (!function_exists('add_action')) {
+    function add_action($hook, $callback, $priority = 10, $accepted_args = 1) { return true; }
+}
+if (!function_exists('did_action')) {
+    function did_action($hook) { return 0; }
 }
 
 // Define plugin constants
@@ -43,6 +51,7 @@ function ukmp_email_init() {
 }
 
 // Hook into WordPress after all plugins are loaded
+// @phpstan-ignore-next-line
 add_action('plugins_loaded', 'ukmp_email_init');
 
 // Alternative hook for shortcodes if plugins_loaded is too early

@@ -9,6 +9,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Fallback for esc_attr() if not available (for non-WordPress environments)
+if (!function_exists('esc_attr')) {
+    function esc_attr($text) {
+        return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    }
+}
+
 class UKMP_Email_Public {
 
     /**
@@ -19,7 +26,9 @@ class UKMP_Email_Public {
         $this->register_shortcodes();
         
         // AJAX handlers
-        add_action('wp_ajax_ukmp_email_search', array($this, 'handle_ajax_search'));
+        if (function_exists('add_action')) {
+            add_action('wp_ajax_ukmp_email_search', array($this, 'handle_ajax_search'));
+        }
         add_action('wp_ajax_nopriv_ukmp_email_search', array($this, 'handle_ajax_search'));
         
         // Enqueue scripts
@@ -57,7 +66,7 @@ class UKMP_Email_Public {
         );
 
         wp_localize_script('ukmp-email-public', 'ukmpemail', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
+            'ajax_url' => admin_url() . 'admin-ajax.php',
             'nonce' => wp_create_nonce('ukmp_email_public_nonce'),
         ));
 
@@ -357,7 +366,7 @@ class UKMP_Email_Public {
         }
         
         // Create mailto URL with subject and body
-        $mailto_url = 'mailto:' . urlencode($email) . '?subject=' . urlencode($subject) . '&body=' . urlencode($email_body);
+        $mailto_url = 'mailto:' . urlencode($email) . '?subject=' . rawurlencode($subject) . '&body=' . rawurlencode($email_body);
         
         return $mailto_url;
     }
